@@ -7,81 +7,111 @@
 #define DERECHA 77
 #define IZQUIERDA 75
 
-void Goto_XY(int x, int y)
+void print(int A[3][3])
 {
-    HANDLE hCon;
-    hCon = GetStdHandle(STD_OUTPUT_HANDLE);
-    COORD dwPos;
-    dwPos.X = x;
-    dwPos.Y = y;
-    SetConsoleCursorPosition(hCon, dwPos);
+    std::cout << std::endl;
+    std::cout << "    -------|-------|-------" << std::endl;
+    for (int (*p)[3] = A; p < A + 3; p++)
+    {
+        std::cout << "   |";
+        for (int* q = *p; q < *(p + 1); q++)
+        {
+
+            std::cout << "   " << *q << "   |";
+        }
+
+        std::cout << std::endl;
+        std::cout << "    -------|-------|-------" << std::endl;
+    }
 }
 
-void Ocultar_Cursor()
+bool Restrincciones(int* posicion, int* espacio, int Tablero[3][3])
 {
-    HANDLE hCon;
-    hCon = GetStdHandle(STD_OUTPUT_HANDLE);
-    CONSOLE_CURSOR_INFO cursor;
-    cursor.dwSize = 2;
-    cursor.bVisible = FALSE;
-    SetConsoleCursorInfo(hCon,&cursor);
+    if (posicion < *Tablero || posicion > *(Tablero + 2) + 2)
+    {
+        return false;
+        //std::cout << "NOOOOO" << std::endl;
+    }
+    else if ((posicion == espacio - 1) && (espacio == *Tablero + 3 || espacio == *Tablero + 6))
+    {
+        return false;
+        //std::cout << "NOOOOO 1" << std::endl; 
+    }
+
+    else if ((posicion == espacio + 1) && (espacio == *Tablero + 2 || espacio == *Tablero + 5))
+    {
+        return false;
+        //std::cout << "NOOOOO 2" << std::endl;
+    }
+    return true;
+}
+
+bool Victoria(int Tablero[3][3])
+{
+    bool flag = true;
+    int l = 1;
+
+    for (int (*p)[3] = Tablero; p < Tablero + 3; p++)
+    {
+        for (int* q = *p; q < *(p + 1); q++)
+        {
+            if (*q == l)
+            {
+                //std::cout << "SI" << std::endl;
+                flag = flag*true;
+            }
+
+            else
+            {
+                //std::cout << "NO" << std::endl;
+                flag = flag * false;
+            }
+
+            l++;
+        }
+    }
+
+    return flag;
 }
 
 int main()
 {
-    Ocultar_Cursor();
-
-    int x = 6, y = 9;
-    Goto_XY(3, 3);
-    std::cout << "1";
-
-    Goto_XY(6, 3);
-    std::cout << "2";
-
-    Goto_XY(9, 3);
-    std::cout << "3";
-
-    Goto_XY(3, 5);
-    std::cout << "4";
-
-    Goto_XY(6, 5);
-    std::cout << "5";
-
-    Goto_XY(9, 5);
-    std::cout << "6";
-
-    Goto_XY(3, 7);
-    std::cout << "7";
-
-    Goto_XY(6, 7);
-    std::cout << "8";
-
-
-
-
+    int Tablero[3][3] = {{4, 7, 2}, {6, 1, 3}, {5, 8, 9} };
+    print(Tablero);
     bool Estado = false;
-    Goto_XY(x, y);
-
+    int* espacio = &(Tablero[2][2]);
+    int* posicion = &(Tablero[2][2]);
+    
     while (Estado == false)
     {
         if (_kbhit())
         {
-            char tecla = _getch();
-            Goto_XY(x, y);
-            std::cout << " ";
+            int tecla = _getch();
 
-            if (tecla == IZQUIERDA) x = x - 3;
-            if (tecla == DERECHA) x = x + 3;
-            if (tecla == ARRIBA) y = y - 2;
-            if (tecla == ABAJO) y = y + 2;
+            if (tecla == IZQUIERDA) posicion = espacio - 1;
+            if (tecla == DERECHA) posicion = espacio + 1;
+            if (tecla == ARRIBA) posicion = espacio - 3;
+            if (tecla == ABAJO)  posicion = espacio + 3;
+                
+            if (Restrincciones(posicion, espacio, Tablero))
+            {
+                int temp = *posicion;
+                *posicion = *espacio;
+                *espacio = temp;
+                espacio = posicion;
+            }
 
-            Goto_XY(x, y);
-            std::cout << "0";
-
+            system("cls");
+            print(Tablero);
+            if (Victoria(Tablero) == true)
+            {
+                std::cout << "GANASTE :)" << std::endl;
+                break;
+            }
+            
+                
         }
-
-        Sleep(100);
     }
-
     return 0;
 }
+
