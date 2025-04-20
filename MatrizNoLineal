@@ -1,0 +1,81 @@
+#include <iostream>
+#include <iomanip>
+
+class cMatrixN
+{
+    private:
+    int dy, dx;
+    int ** vec;
+    
+    public:
+    cMatrixN(int _dy, int _dx)
+    {
+        dy = _dy;
+        dx = _dx;
+        vec = new int* [dy];
+        for (int i = 0; i < dy; i++)
+        {
+            vec[i] = new int [dx];
+        }
+        std::cout << " MATRIZ CREADA" << std::endl;
+    }
+    ~cMatrixN()
+    {
+        for (int i = 0; i < dy; i++)
+        {
+            delete [] vec[i];
+        }
+        delete [] vec;
+        std::cout << " MATRIZ LIBERADA" << std::endl;
+    }
+    
+    int& operator () (int i, int j)
+    {
+        if(i < 0 || j < 0 || i >= dy || j >= dx)
+        {
+            throw std::out_of_range("Índices fuera de rango");
+        }
+        
+        return vec[i][j];
+    }
+    
+    void print()
+    {
+        std::cout << std::endl;
+        
+        for(int i = 0; i < dy; i++)
+        {
+            for(int j = 0; j < dx; j++)
+            {
+                std::cout << std::setw(5) << vec[i][j] << std::setw(5);
+            }
+            std::cout << std::endl;
+        }
+        
+        std::cout << std::endl;
+        std::cout << std::endl;
+    }
+};
+
+
+
+int main()
+{
+    int filas = 5;
+    int columnas = 4;
+    int l = 0;
+    
+    cMatrixN matriz1(filas,columnas);
+    
+    for (int i = 0; i < filas; i++)
+    {
+        for(int j = 0; j < columnas; j++)
+        {
+           matriz1(i,j) = l;
+           l++;
+        }
+    }
+    matriz1.print();
+
+    return 0;
+}
