@@ -1,9 +1,9 @@
 #include <iostream>
+#include <iomanip>
 
 void Mult(int (*p)[3][3])
 {
     int (*q)[3] = *p;
-    
     int (*A) = *(q);
     int (*B) = *(q + 3);
     int n = -1;
@@ -34,8 +34,23 @@ void Mult(int (*p)[3][3])
     return;
 }
 
-
-
+void print(int (&matriz3d)[3][3][3])
+{
+   std::cout << std::endl;
+    for(int (*p)[3][3] = matriz3d ; p < matriz3d + 3 ; p++)
+    {
+        for(int (*q)[3] = *p ; q < *(p + 1) ; q++)
+        {
+            for(int *l = *q ; l < *(q + 1) ; l++)
+            {
+                std::cout << std::setw(10) << *l << std::setw(10);
+            }
+            std::cout << std::endl;
+        }
+        std::cout << std::endl;
+    } 
+    return;
+}
 
 int main()
 {
@@ -49,39 +64,9 @@ int main()
                                                   {0,0,0},
                                                   {0,0,0}} };
                                                   
-    
     int (*p)[3][3] = matriz3d;
     Mult(p);
-    
-    for(int (*p)[3][3] = matriz3d ; p < matriz3d + 3 ; p++)
-    {
-        for(int (*q)[3] = *p ; q < *(p + 1) ; q++)
-        {
-            for(int *l = *q ; l < *(q + 1) ; l++)
-            {
-                std::cout << "\t" << *l << "\t";
-            }
-            std::cout << std::endl;
-        }
-        std::cout << std::endl;
-    }
-    
-/*
-   for(int i = 0; i < 3; i++)
-    {
-        for(int j = 0; j < 3; j++)
-        {
-            int cont = 0;
-            
-            for(int u = 0; u<3; u++)
-            {
-                cont = cont + matriz23d[0][i][u] * matriz23d[1][u][j];
-            }
-            matriz23d[2][i][j] = cont;
-        }
-    }
-
-*/
+    print(matriz3d);
 
     return 0;
 }
