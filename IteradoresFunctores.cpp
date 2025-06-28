@@ -73,7 +73,6 @@ int main()
    Iterador<int> it;
    
    cout << "Original: ";
-
    for (it = arr; it < arr + n ; ++it) {
       cout << *it << " ";
    }
@@ -83,6 +82,15 @@ int main()
    ordenAsc.ordenar(arr, arr + n);
 
    cout << "Ascendente: ";
+   for (it = arr; it < arr + n ; ++it) {
+      cout << *it << " ";
+   }
+   cout << "\n";
+   
+   Ordene<int, Descendente> ordenDes;
+   ordenDes.ordenar(arr, arr + n);
+
+   cout << "Descendente: ";
    for (it = arr; it < arr + n ; ++it) {
       cout << *it << " ";
    }
