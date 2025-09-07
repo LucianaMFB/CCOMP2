@@ -1,80 +1,128 @@
 #include <iostream>
 
+template <class T>
 class Cola {
-	int A[10];
-	int *top = nullptr;
-	int *end = nullptr;
+	T A[10];
+	T *head = nullptr;
+	T *tail = nullptr;
 	
 	public: 
-	bool push(int val);
-	bool pop(int &val);
+	bool push(T val);
+	bool pop(T &val);
 	bool vacio();
 	bool lleno();
 	void print();
 };
 
-bool Cola::vacio() {
-	return !top;
+template <class T>
+bool Cola<T>::vacio() {
+	return !head;
 }
 
-bool Cola::lleno() {
-	return end == A + 9;
+template <class T>
+bool Cola<T>::lleno() {
+	return ((tail == A + 9) && (head == A) ) || ((tail == head - 1) && (head > A));
 }
 
-bool Cola::push(int val) {
+template <class T>
+bool Cola<T>::push(T val) {
 	if (lleno()) {
+	    std::cout << " ESTA LLENO " << std::endl;
 		return false;
 	}
 	
 	else {
 		if (vacio()) {
-			top = A;
-			end = A;
+			head = A;
+			tail = A;
 		}
 		
 		else {
-			end++;
+		    if((head > A) && (tail == A + 9)) {
+		        tail = A;
+		    }
+		    
+		    else {
+		        tail++;
+		    }
 		}
-		*end = val;
+		*tail = val;
+		//std::cout << "ELEMENTO AGREGADO" << std::endl;
 		return true;
 	}
 }
 
-void Cola::print() {
-	for(;top < end + 1; top++)
-	{
-		std::cout << *top << " ";
+template <class T>
+void Cola<T>::print() {
+    T *temp_a = head;
+    T *temp_b = tail;
+    
+    if (temp_a == A) {
+    	for(;temp_a < temp_b + 1; temp_a++)
+    	{
+    		std::cout << *temp_a << " ";
+    	}
+    }
+	
+	else {
+	    while (temp_a != temp_b) 
+	    {
+	        if (temp_a == A + 9) {
+	            std::cout << *temp_a << " ";
+	            temp_a = A;
+	        }
+	        
+	        else {
+	        	std::cout << *temp_a << " ";
+	            temp_a++;
+	        }
+	    }
+		std::cout << *temp_b << std::endl;
 	}
 	
-	std::cout<<std::endl;
+	std::cout << std::endl;
+	temp_a = nullptr;
+	temp_b = nullptr;
 }
 
-
-bool Cola::pop(int &val) {
+template <class T>
+bool Cola<T>::pop(T &val) {
 	if (vacio()) {
+		std::cout << "ESTA VACIO" << std::endl;
 		return false;
 	}
 	
 	else {
-		val = *end;
-		end--;
-		if (top == end) {
-			top = nullptr;
-			end = nullptr;
+		val = *head;
+		head++;
+		if (head == tail) {
+			head = nullptr;
+			tail = nullptr;
 		}
+		//std::cout << "ELEMENTO RETIRADO" << std::endl;
 		return true;
    }
 }
 
 int main()
 {
-   Cola cola1;
-   cola1.push(5);
-   cola1.push(10);
+   Cola<int> cola1;
+   cola1.push(1);
    cola1.push(2);
-   
+   cola1.push(3);
+   cola1.push(4);
+   cola1.push(5);
+   cola1.push(6);
+   cola1.push(7);
+   cola1.print();
    int a;
    cola1.pop(a);
+   cola1.push(8);
+   cola1.push(9);
+   cola1.push(10);
+   cola1.push(11);
+   cola1.pop(a);
+   cola1.push(6);
    cola1.print();
    
    
