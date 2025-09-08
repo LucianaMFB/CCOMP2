@@ -62,6 +62,7 @@ void Cola<T>::print() {
     	{
     		std::cout << *temp_a << " ";
     	}
+    	std::cout << std::endl;
     }
 	
 	else {
@@ -80,6 +81,8 @@ void Cola<T>::print() {
 		std::cout << *temp_b << std::endl;
 	}
 	
+	std::cout << "Cabeza Apuntando: "<< *head << std::endl;
+	std::cout << "Cola Apuntando: " << *tail << std::endl;
 	std::cout << std::endl;
 	temp_a = nullptr;
 	temp_b = nullptr;
@@ -94,8 +97,16 @@ bool Cola<T>::pop(T &val) {
 	
 	else {
 		val = *head;
-		head++;
-		if (head == tail) {
+		if (head == A + 9)
+		{
+			head = A;
+		}
+		else
+		{
+			head++;
+		}
+		
+		if (head == tail+1) {
 			head = nullptr;
 			tail = nullptr;
 		}
@@ -124,6 +135,35 @@ int main()
    cola1.pop(a);
    cola1.push(6);
    cola1.print();
+   
+   Cola<int> cola2;
+   cola2.push(1);
+   cola2.push(2);
+   cola2.push(3);
+   cola2.push(4);
+   cola2.push(5);
+   cola2.push(6);
+   cola2.push(7);
+   cola2.push(8);
+   cola2.push(9);
+   cola2.push(10);
+   cola2.print();
+   int b;
+   cola2.pop(b);
+   cola2.pop(b);
+   cola2.pop(b);
+   cola2.pop(b);
+   cola2.pop(b);
+   cola2.pop(b);
+   cola2.pop(b);
+   cola2.pop(b);
+   cola2.pop(b);
+   cola2.push(11);
+   cola2.print();
+   cola2.pop(b);
+   cola2.print();
+   
+   
    
    
    return 0;
